@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image and tag it
-                    sh 'docker.build -t (env.DOCKER_IMAGE)'
+                    sh 'docker.build -t {env.DOCKER_IMAGE} . '
                     }
                 }
             }
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 // Deploy the Docker image to your environment (e.g., Kubernetes, Docker Compose, etc.)
                 script {
-                    sh "docker run -it{env.DOCKER_IMAGE}"
+                    sh "docker run -it {env.DOCKER_IMAGE}"
                 }
             }
         }
