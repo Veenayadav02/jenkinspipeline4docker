@@ -1,11 +1,5 @@
 pipeline {
     agent any
-
-    environment {
-        // Define environment variables
-        DOCKER_IMAGE = 'ubuntu:latest'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -18,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image and tag it
-                    sh 'docker.build -t {env.DOCKER_IMAGE} . '
+                    sh 'docker.build -t ubuntuimg . '
                     }
                 }
             }
@@ -28,7 +22,7 @@ pipeline {
             steps {
                 // Deploy the Docker image to your environment (e.g., Kubernetes, Docker Compose, etc.)
                 script {
-                    sh "docker run -it {env.DOCKER_IMAGE}"
+                    sh "docker run -it ubuntuimg "
                 }
             }
         }
