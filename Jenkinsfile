@@ -18,11 +18,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image and tag it
-                    sh 'docker.build(env.DOCKER_IMAGE)'
-
-                    // Push the Docker image to a container registry (e.g., Docker Hub)
-                    // docker.withRegistry('https://registry.example.com', 'registry-credentials') {
-                       // docker.image(env.DOCKER_IMAGE).push()
+                    sh 'docker.build =t (env.DOCKER_IMAGE)'
                     }
                 }
             }
@@ -32,19 +28,11 @@ pipeline {
             steps {
                 // Deploy the Docker image to your environment (e.g., Kubernetes, Docker Compose, etc.)
                 script {
-                    sh "docker run -d -p 8080:80 ${env.DOCKER_IMAGE}"
+                    sh "docker run -it{env.DOCKER_IMAGE}"
                 }
             }
         }
-
-        stage('Test') {
-            steps {
-                // Add test steps here if needed
-            }
-        }
-    }
-
-    post {
+ post {
         success {
             echo 'Pipeline succeeded!'
         }
