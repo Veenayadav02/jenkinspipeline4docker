@@ -7,7 +7,7 @@ pipeline {
                 script {
                     // You might need to set up Docker permissions properly.
                     // For example, adding the Jenkins user to the Docker group:
-                    // sh 'sudo usermod -aG docker jenkins'
+                    sh 'sudo usermod -aG docker jenkins'
                 }
             }
         }
