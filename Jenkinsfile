@@ -6,8 +6,7 @@ pipeline {
             steps {
                 script {
                     https://github.com/Veenayadav02/jenkinspipeline4docker.git
-                    
-                }
+                     }
             }
         }
 
