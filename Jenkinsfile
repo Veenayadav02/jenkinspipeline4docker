@@ -2,26 +2,25 @@ pipeline {
     agent any
 
     stages {
-            stages {
-        stage('1') {
+        stage('Set Permissions') {
             steps {
                 script {
-                    sh 'sudo -n chmod 666 /var/run/docker.sock'
-                    // The -n option prevents sudo from prompting for a password
-                    docker.build('pythonubuntu')
-                }
-            }
-        }
-        stage('Git') {
-            steps {
-                script {
-                    // Build Docker image
-                git 'https://github.com/Veenayadav02/jenkinspipeline4docker.git'
+                    // You might need to set up Docker permissions properly.
+                    // For example, adding the Jenkins user to the Docker group:
+                    // sh 'sudo usermod -aG docker jenkins'
                 }
             }
         }
 
-        stage('Build1') {
+        stage('Git Checkout') {
+            steps {
+                script {
+                    git 'https://github.com/Veenayadav02/jenkinspipeline4docker.git'
+                }
+            }
+        }
+
+        stage('Build') {
             steps {
                 script {
                     // Run tests if needed
