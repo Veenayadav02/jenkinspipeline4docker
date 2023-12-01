@@ -1,46 +1,32 @@
 pipeline {
     agent any
+
     stages {
-        stage('Checkout') {
+        stage('Git') {
             steps {
-                // Checkout your source code from version control
+                script {
+                    // Build Docker image
                 git 'https://github.com/Veenayadav02/jenkinspipeline4docker.git'
-            }
-        }
-
-        stage('Build and Push Docker Image') {
-            steps {
-                script {
-                    // Build Docker image and tag it
-                    sh 'docker.build -t ubuntuimg . '
-                    }
                 }
             }
         }
 
-        stage('Deploy') {
+        stage('Build') {
             steps {
-                // Deploy the Docker image to your environment (e.g., Kubernetes, Docker Compose, etc.)
                 script {
-                    sh "docker run -it ubuntuimg "
+                    // Run tests if needed
+                    sh 'docker build -t pythonubuntu .'
                 }
             }
         }
- post {
-        success {
-            echo 'Pipeline succeeded!'
-        }
 
-        failure {
-            echo 'Pipeline failed!'
-        }
-
-        always {
-            // Clean up, if needed
-            script {
-                sh "docker stop \$(docker ps -q --filter ancestor=${env.DOCKER_IMAGE})"
-                sh "docker rm \$(docker ps -a -q --filter ancestor=${env.DOCKER_IMAGE})"
+        stage('Run') {
+            steps {
+                script {
+                    // Deploy the Docker image as needed
+                    sh 'docker run -i pythonubuntu'
+                }
             }
         }
     }
-}    
+}
