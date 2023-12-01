@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build Docker image
+                    https://github.com/Veenayadav02/jenkinspipeline4docker.git
                     
                 }
             }
