@@ -1,46 +1,64 @@
 pipeline {
     agent any
 
+    environment {
+        // Define environment variables
+        DOCKER_IMAGE = 'ubuntu:latest'
+    }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                script {
-                    https://github.com/Veenayadav02/jenkinspipeline4docker.git
-                     
+                // Checkout your source code from version control
+                checkout scm
             }
         }
 
-        stage('Test') {
+        stage('Build and Push Docker Image') {
             steps {
                 script {
-                    // Run tests if needed
-                    docker build -t img .
+                    // Build Docker image and tag it
+                    docker.build(env.DOCKER_IMAGE)
+
+                    // Push the Docker image to a container registry (e.g., Docker Hub)
+                    // docker.withRegistry('https://registry.example.com', 'registry-credentials') {
+                       // docker.image(env.DOCKER_IMAGE).push()
+                    }
                 }
             }
         }
 
         stage('Deploy') {
             steps {
+                // Deploy the Docker image to your environment (e.g., Kubernetes, Docker Compose, etc.)
                 script {
-                    // Deploy the Docker image as needed
-                                      docker run -it img 
-                  }
+                    sh "docker run -d -p 8080:80 ${env.DOCKER_IMAGE}"
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Add test steps here if needed
             }
         }
     }
 
     post {
         success {
-            // Do something on successful build
-            echo 'Build successful!'
-
-            // Clean up Docker images after successful build (optional)
-            cleanWs()
-            docker.image("my-java-app:${env.BUILD_ID}").remove()
+            echo 'Pipeline succeeded!'
         }
+
         failure {
-            // Do something on build failure
-            echo 'Build failed!'
+            echo 'Pipeline failed!'
+        }
+
+        always {
+            // Clean up, if needed
+            script {
+                sh "docker stop \$(docker ps -q --filter ancestor=${env.DOCKER_IMAGE})"
+                sh "docker rm \$(docker ps -a -q --filter ancestor=${env.DOCKER_IMAGE})"
+            }
         }
     }
 }
