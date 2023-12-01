@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image and tag it
-                    sh 'docker.build =t (env.DOCKER_IMAGE)'
+                    sh 'docker.build -t (env.DOCKER_IMAGE)'
                     }
                 }
             }
@@ -49,3 +49,4 @@ pipeline {
             }
         }
     }
+}    
