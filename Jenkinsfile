@@ -2,6 +2,15 @@ pipeline {
     agent any
 
     stages {
+         stage('Build') {
+            steps {
+                script {
+                    // Allow Jenkins to run Docker commands without sudo
+                    sh 'sudo chmod 666 /var/run/docker.sock'
+                    docker.build('pythonubuntu')
+                }
+            }
+        }
         stage('Git') {
             steps {
                 script {
@@ -11,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build1') {
             steps {
                 script {
                     // Run tests if needed
