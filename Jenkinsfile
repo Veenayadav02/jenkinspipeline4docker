@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout your source code from version control
-                checkout scm
+                git 'https://github.com/Veenayadav02/jenkinspipeline4docker.git'
             }
         }
 
@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image and tag it
-                    docker.build(env.DOCKER_IMAGE)
+                    sh 'docker.build(env.DOCKER_IMAGE)'
 
                     // Push the Docker image to a container registry (e.g., Docker Hub)
                     // docker.withRegistry('https://registry.example.com', 'registry-credentials') {
@@ -61,3 +61,4 @@ pipeline {
             }
         }
     }
+}
