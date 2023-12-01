@@ -2,11 +2,12 @@ pipeline {
     agent any
 
     stages {
-         stage('Build') {
+            stages {
+        stage('1') {
             steps {
                 script {
-                    // Allow Jenkins to run Docker commands without sudo
-                    sh 'sudo chmod 666 /var/run/docker.sock'
+                    sh 'sudo -n chmod 666 /var/run/docker.sock'
+                    // The -n option prevents sudo from prompting for a password
                     docker.build('pythonubuntu')
                 }
             }
